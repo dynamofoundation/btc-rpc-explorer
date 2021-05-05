@@ -1,7 +1,7 @@
 extends layout
 
 block headContent
-	title Bitcoin Explorer
+	title Dynamo Coin Explorer
 	
 block content
 	if (getblockchaininfo == null)
@@ -21,7 +21,7 @@ block content
 		+dismissableInfoAlert("homepageWelcomeBannerDismissed")
 			.clearfix
 				.float-start
-					h4.fw-light.mb-2 Welcome to Bitcoin Explorer!
+					h4.fw-light.mb-2 Welcome to Dynamo Coin Explorer!
 				.float-start
 					if (config.demoSite)
 						- var networkNameMap = {"main": "Mainnet", "test": "Testnet", "signet": "Signet"};
@@ -30,7 +30,7 @@ block content
 							i.fas.fa-sticky-note
 			
 
-			.mb-2 An easy-to-use, educational explorer whose <u>only dependency is your <b>Bitcoin Core</b> node</u>!
+			.mb-2 An easy-to-use, educational explorer whose <u>only dependency is your <b>DynamoCoin Core</b> node</u>!
 			.mb-3
 				- var features = ["Open-Source", "Easy Setup", "Low Hardware Requirements", "Fun!"];
 
@@ -45,13 +45,13 @@ block content
 						i.fab.fa-github.fa-lg.me-2
 						| View Source
 
-				a.btn.btn-primary.mb-2.mb-md-1.me-3(href="https://donate.bitcoinexplorer.org", target="_blank", title="Support this project with a donation", data-bs-toggle="tooltip", data-bs-placement="bottom")
+				a.btn.btn-primary.mb-2.mb-md-1.me-3(href="https://donate.DynamoCoin.org", target="_blank", title="Support this project with a donation", data-bs-toggle="tooltip", data-bs-placement="bottom")
 					i.fas.fa-heart.text-danger.fa-lg.me-2
 					| Donate
 
-				a.btn.btn-primary.mb-2.mb-md-1(href="https://twitter.com/BitcoinExplorer", target="_blank", title="Follow @BitcoinExplorer on Twitter", data-bs-toggle="tooltip", data-bs-placement="bottom")
+				a.btn.btn-primary.mb-2.mb-md-1(href="https://twitter.com/DynamoCoin", target="_blank", title="Follow @DynamoCoin on Twitter", data-bs-toggle="tooltip", data-bs-placement="bottom")
 					i.fab.fa-twitter.text-twitter.fa-lg.me-2
-					| @BitcoinExplorer
+					| @DynamoCoin
 					
 
 				

@@ -57,7 +57,7 @@ module.exports = {
 	name:"Bitcoin",
 	ticker:"BTC",
 	logoUrlsByNetwork:{
-		"main":"./img/logo/logo.svg",
+		"main":"./img/logo/dynamo-logo3.png",
 		"test":"./img/logo/logo-testnet.svg",
 		"regtest":"./img/logo/logo-regtest.svg",
 		"signet":"./img/logo/logo-signet.svg"
@@ -74,15 +74,15 @@ module.exports = {
 		"regtest": "#777"
 	},
 	siteTitlesByNetwork: {
-		"main":"Bitcoin Explorer",
+		"main":"Dynamo Coin Explorer",
 		"test":"Testnet Explorer",
 		"regtest":"Regtest Explorer",
 		"signet":"Signet Explorer",
 	},
 	demoSiteUrlsByNetwork: {
-		"main": "https://bitcoinexplorer.org",
-		"test": "https://testnet.bitcoinexplorer.org",
-		"signet": "https://signet.bitcoinexplorer.org",
+		"main": "https://www.dynamocoin.org/",
+		"test": "https://testnet.DynamoCoin.org",
+		"signet": "https://signet.DynamoCoin.org",
 	},
 	knownTransactionsByNetwork: {
 		main: "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
