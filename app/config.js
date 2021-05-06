@@ -21,6 +21,8 @@ const credentials = require("./credentials.js");
 const currentCoin = process.env.BTCEXP_COIN || "BTC";
 const defaultTheme = process.env.BTCEXP_UI_THEME || "dark";
 
+const currentCoin_name = "Dynamo Coin";
+
 const rpcCred = credentials.rpc;
 
 if (rpcCred.cookie && !rpcCred.username && !rpcCred.password && fs.existsSync(rpcCred.cookie)) {
@@ -219,14 +221,14 @@ module.exports = {
 	/* 6 */		{name:"RPC Browser", url:"./rpc-browser", desc:"Browse the RPC functionality of this node. See docs and execute commands.", fontawesome:"fas fa-book"},
 	/* 7 */		{name:"RPC Terminal", url:"./rpc-terminal", desc:"Directly execute RPCs against this node.", fontawesome:"fas fa-terminal"},
 
-	/* 8 */		{name:(coins[currentCoin].name + " Fun"), url:"./fun", desc:"See fun/interesting historical blockchain data.", fontawesome:"fas fa-flag"},
+	/* 8 */		{name: (currentCoin_name + " Fun"), url:"./fun", desc:"See fun/interesting historical blockchain data.", fontawesome:"fas fa-flag"},
 
 	/* 9 */		{name:"Mining Summary", url:"./mining-summary", desc:"Summary of recent data about miners.", fontawesome:"fas fa-chart-pie"},
 	/* 10 */	{name:"Block Stats", url:"./block-stats", desc:"Summary data for blocks in configurable range.", fontawesome:"fas fa-layer-group"},
 	/* 11 */	{name:"Block Analysis", url:"./block-analysis", desc:"Summary analysis for all transactions in a block.", fontawesome:"fas fa-angle-double-down"},
 	/* 12 */	{name:"Difficulty History", url:"./difficulty-history", desc:"Graph of difficulty changes over time.", fontawesome:"fas fa-chart-line"},
 
-	/* 13 */	{name:"Whitepaper Extracter", url:"./bitcoin-whitepaper", desc:"Tool that extracts the Bitcoin whitepaper from data embedded in the blockchain.", fontawesome:"far fa-file-alt"},
+	/* 13 */	{ name: "Whitepaper", url: "https://www.dynamocoin.org/whitepaper/", desc: "Tool that extracts the " + currentCoin_name + " whitepaper from data embedded in the blockchain.", fontawesome:"far fa-file-alt"},
 	]
 };
 
