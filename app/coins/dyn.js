@@ -98,7 +98,7 @@ module.exports = {
 	maxBlockSize: 1000000,
 	difficultyAdjustmentBlockCount: 2016,
 	maxSupplyByNetwork: {
-		"main": new Decimal(20999817.31308491), // ref: https://bitcoin.stackexchange.com/a/38998
+		"main": new Decimal(21000000), // ref: https://bitcoin.stackexchange.com/a/38998
 		"test": new Decimal(21000000),
 		"regtest": new Decimal(21000000),
 		"signet": new Decimal(21000000)
@@ -120,7 +120,7 @@ module.exports = {
 
 	// used for supply estimates that don't need full gettxoutset accuracy
 	coinSupplyCheckpointsByNetwork: {
-		"main": [ 675046, new Decimal(18656332.38) ],
+		"main": [0, new Decimal(0)],
 		"test": [ 1940614, new Decimal(20963051.112) ],
 		"signet": [ 29472, new Decimal(1473600) ],
 		"regtest": [ 0, new Decimal(0) ]
