@@ -274,7 +274,7 @@ function satoshisPerUnitOfLocalCurrency(localCurrency) {
 		dec = one.dividedBy(dec);
 
 		var unitName = coins[config.coin].baseCurrencyUnit.name;
-		var satCurrencyType = global.currencyTypes["sat"];
+		var satCurrencyType = global.currencyTypes["atm"];
 		var localCurrencyType = global.currencyTypes[localCurrency];
 
 		// BTC/USD -> sat/USD

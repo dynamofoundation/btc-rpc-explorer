@@ -7,10 +7,10 @@ global.currencyTypes = {
 		default:true,
 		decimalPlaces:8
 	},
-	"sat": {
-		id: "sat",
+	"atm": {
+		id: "atm",
 		type:"native",
-		name:"sat",
+		name:"atm",
 		multiplier:100000000,
 		decimalPlaces:0
 	},

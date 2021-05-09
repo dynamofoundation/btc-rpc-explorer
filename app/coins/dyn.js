@@ -16,23 +16,9 @@ var currencyUnits = [
 	},
 	{
 		type:"native",
-		name:"mBTC",
-		multiplier:1000,
-		values:["mbtc"],
-		decimalPlaces:5
-	},
-	{
-		type:"native",
-		name:"bits",
-		multiplier:1000000,
-		values:["bits"],
-		decimalPlaces:2
-	},
-	{
-		type:"native",
-		name:"sat",
+		name:"atm",
 		multiplier:100000000,
-		values:["sat", "satoshi"],
+		values: ["atm", "atom"],
 		decimalPlaces:0
 	},
 	{
@@ -94,25 +80,25 @@ module.exports = {
 		"https://raw.githubusercontent.com/btccom/Blockchain-Known-Pools/master/pools.json",
 		"https://raw.githubusercontent.com/blockchain/Blockchain-Known-Pools/master/pools.json"
 	],
-	maxBlockWeight: 4000000,
-	maxBlockSize: 1000000,
-	difficultyAdjustmentBlockCount: 2016,
+	maxBlockWeight: 40000000,
+	maxBlockSize: 10000000,
+	difficultyAdjustmentBlockCount: 120,
 	maxSupplyByNetwork: {
-		"main": new Decimal(21000000), // ref: https://bitcoin.stackexchange.com/a/38998
+		"main": new Decimal(0), // ref: https://bitcoin.stackexchange.com/a/38998
 		"test": new Decimal(21000000),
 		"regtest": new Decimal(21000000),
 		"signet": new Decimal(21000000)
 	},
-	targetBlockTimeSeconds: 600,
-	targetBlockTimeMinutes: 10,
+	targetBlockTimeSeconds: 15,
+	targetBlockTimeMinutes: 0,
 	currencyUnits:currencyUnits,
-	currencyUnitsByName:{"DYN":currencyUnits[0], "mBTC":currencyUnits[1], "bits":currencyUnits[2], "sat":currencyUnits[3]},
-	baseCurrencyUnit:currencyUnits[3],
+	currencyUnitsByName:{"DYN":currencyUnits[0], "atm":currencyUnits[1]},
+	baseCurrencyUnit:currencyUnits[1],
 	defaultCurrencyUnit:currencyUnits[0],
 	feeSatoshiPerByteBucketMaxima: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 50, 75, 100, 150],
 	
 	halvingBlockIntervalsByNetwork: {
-		"main": 210000,
+		"main": 0,
 		"test": 210000,
 		"regtest": 150,
 		"signet": 210000
