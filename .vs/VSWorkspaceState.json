@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\api",
+    "\\app\\coins",
+    "\\docs",
+    "\\public",
+    "\\public\\txt",
+    "\\public\\txt\\mining-pools-configs",
+    "\\raw",
+    "\\routes"
+  ],
+  "SelectedNode": "\\app\\coins\\dyn.js",
+  "PreviewInSolutionExplorer": false
+}

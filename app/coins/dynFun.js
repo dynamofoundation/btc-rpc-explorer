@@ -1,4 +1,8 @@
 module.exports = {
+	items: []
+};
+
+/*module.exports = {
 	items: [
 		{
 			type: "blockheight",
@@ -390,4 +394,4 @@ module.exports = {
 			referenceUrl: "https://github.com/bitcoin/bitcoin/issues/3303"
 		},
 	]
-};
+};*/

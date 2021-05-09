@@ -3,15 +3,15 @@
 const Decimal = require("decimal.js");
 const Decimal8 = Decimal.clone({ precision:8, rounding:8 });
 
-const btcFun = require("./btcFun.js");
+const dynFun = require("./dynFun.js");
 
 var currencyUnits = [
 	{
 		type:"native",
-		name:"BTC",
+		name:"DYN",
 		multiplier:1,
 		default:true,
-		values:["", "btc", "BTC"],
+		values:["", "dyn", "DYN"],
 		decimalPlaces:8
 	},
 	{
@@ -54,8 +54,8 @@ var currencyUnits = [
 ];
 
 module.exports = {
-	name:"Bitcoin",
-	ticker:"BTC",
+	name:"DynamoCoin",
+	ticker:"DYN",
 	logoUrlsByNetwork:{
 		"main":"./img/logo/dynamo-logo3.png",
 		"test":"./img/logo/logo-testnet.svg",
@@ -106,7 +106,7 @@ module.exports = {
 	targetBlockTimeSeconds: 600,
 	targetBlockTimeMinutes: 10,
 	currencyUnits:currencyUnits,
-	currencyUnitsByName:{"BTC":currencyUnits[0], "mBTC":currencyUnits[1], "bits":currencyUnits[2], "sat":currencyUnits[3]},
+	currencyUnitsByName:{"DYN":currencyUnits[0], "mBTC":currencyUnits[1], "bits":currencyUnits[2], "sat":currencyUnits[3]},
 	baseCurrencyUnit:currencyUnits[3],
 	defaultCurrencyUnit:currencyUnits[0],
 	feeSatoshiPerByteBucketMaxima: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 50, 75, 100, 150],
@@ -418,7 +418,7 @@ module.exports = {
 		}
 	},
 	genesisCoinbaseOutputAddressScripthash:"8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161",
-	historicalData: btcFun.items,
+	historicalData: dynFun.items,
 	exchangeRateData:{
 		jsonUrl:"https://api.coindesk.com/v1/bpi/currentprice.json",
 		responseBodySelectorFunction:function(responseBody) {

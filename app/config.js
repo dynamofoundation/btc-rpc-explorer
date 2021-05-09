@@ -18,7 +18,7 @@ if (!baseUrl.endsWith("/")) {
 const coins = require("./coins.js");
 const credentials = require("./credentials.js");
 
-const currentCoin = process.env.BTCEXP_COIN || "BTC";
+const currentCoin = process.env.BTCEXP_COIN || "DYN";
 const defaultTheme = process.env.BTCEXP_UI_THEME || "dark";
 
 const currentCoin_name = "Dynamo Coin";
