@@ -801,7 +801,9 @@ function logError(errorId, err, optionalUserData = null) {
 	}
 
 	debugErrorLog("Error " + errorId + ": " + err + ", json: " + JSON.stringify(err) + (optionalUserData != null ? (", userData: " + optionalUserData + " (json: " + JSON.stringify(optionalUserData) + ")") : ""));
-	
+
+	logErrorToFile("Error " + errorId + ": " + err + ", json: " + JSON.stringify(err) + (optionalUserData != null ? (", userData: " + optionalUserData + " (json: " + JSON.stringify(optionalUserData) + ")") : ""));
+
 	if (err && err.stack) {
 		debugErrorVerboseLog("Stack: " + err.stack);
 	}
@@ -812,6 +814,47 @@ function logError(errorId, err, optionalUserData = null) {
 	}
 
 	return returnVal;
+}
+
+function logToFile(vDesc)
+{
+	debugLog(vDesc);
+
+	var currentdate  = new Date();
+
+	var DT = currentdate.getFullYear() + "/"
+		+ (currentdate.getMonth() + 1) + "/"
+		+ currentdate.getDate() + " "
+		+ currentdate.getHours() + ":"
+		+ currentdate.getMinutes() + ":"
+		+ currentdate.getSeconds();
+
+	var fs = require('fs');
+
+	fs.appendFile('dynlog.txt', "\n" + DT + " : " + vDesc , function (err) {
+		if (err) throw err;
+	});
+
+	return 1;
+}
+
+function logErrorToFile(vDesc) {
+	var currentdate = new Date();
+
+	var DT = currentdate.getFullYear() + "/"
+		+ (currentdate.getMonth() + 1) + "/"
+		+ currentdate.getDate() + " "
+		+ currentdate.getHours() + ":"
+		+ currentdate.getMinutes() + ":"
+		+ currentdate.getSeconds();
+		
+	var fs = require('fs');
+
+	fs.appendFile('dynlogerror.txt', "test", function (err) {
+		if (err) throw err;
+	});
+
+	return 1;
 }
 
 function buildQrCodeUrls(strings) {
@@ -991,6 +1034,8 @@ module.exports = {
 	colorHexToRgb: colorHexToRgb,
 	colorHexToHsl: colorHexToHsl,
 	logError: logError,
+	logToFile: logToFile,
+	logErrorToFile: logErrorToFile,
 	buildQrCodeUrls: buildQrCodeUrls,
 	ellipsize: ellipsize,
 	ellipsizeMiddle: ellipsizeMiddle,

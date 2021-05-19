@@ -23,23 +23,23 @@ const configPaths = [
 	path.join(process.cwd(), "dyn-rpc-explorer.env"),
 ];
 
-debugLog("Searching for config files...");
+logToFile("Searching for config files...");
 let configFileLoaded = false;
 configPaths.forEach(path => {
 	if (fs.existsSync(path)) {
-		debugLog(`Config file found at ${path}, loading...`);
+		logToFile(`Config file found at ${path}, loading...`);
 
 		dotenv.config({ path });
 
 		configFileLoaded = true;
 
 	} else {
-		debugLog(`Config file not found at ${path}, continuing...`);
+		logToFile(`Config file not found at ${path}, continuing...`);
 	}
 });
 
 if (!configFileLoaded) {
-	debugLog("No config files found. Using all defaults.");
+	logToFile("No config files found. Using all defaults.");
 
 	if (!process.env.NODE_ENV) {
 		process.env.NODE_ENV = "production";
@@ -196,11 +196,12 @@ if (config.baseUrl != '/') {
 }
 
 process.on("unhandledRejection", (reason, p) => {
-	debugLog("Unhandled Rejection at: Promise", p, "reason:", reason, "stack:", (reason != null ? reason.stack : "null"));
+	logToFile("Unhandled Rejection at: Promise", p, "reason:", reason, "stack:", (reason != null ? reason.stack : "null"));
 });
 
+
 function loadMiningPoolConfigs() {
-	debugLog("Loading mining pools config");
+	logToFile("Loading mining pools config");
 
 	global.miningPoolsConfigs = [];
 
@@ -265,7 +266,7 @@ function loadChangelog() {
 }
 
 function loadHistoricalDataForChain(chain) {
-	debugLog(`Loading historical data for chain=${chain}`);
+	logToFile(`Loading historical data for chain=${chain}`);
 
 	if (global.coinConfig.historicalData) {
 		global.coinConfig.historicalData.forEach(function(item) {
@@ -284,9 +285,30 @@ function loadHistoricalDataForChain(chain) {
 	}
 }
 
+function logToFile(vDesc) {
+	debugLog(vDesc);
+
+	var currentdate = new Date();
+
+	var DT = currentdate.getFullYear() + "/"
+		+ (currentdate.getMonth() + 1) + "/"
+		+ currentdate.getDate() + " "
+		+ currentdate.getHours() + ":"
+		+ currentdate.getMinutes() + ":"
+		+ currentdate.getSeconds();
+
+	var fs = require('fs');
+
+	fs.appendFile('dynlog.txt', "\n" + DT + " : " + vDesc, function (err) {
+		if (err) throw err;
+	});
+
+	return 1;
+}
+
 function verifyRpcConnection() {
 	if (!global.activeBlockchain) {
-		debugLog(`Verifying RPC connection...`);
+		logToFile(`Verifying RPC connection...`);
 
 		// normally in application code we target coreApi, but here we're trying to
 		// verify the RPC connection so we target rpcApi directly and include
@@ -298,6 +320,11 @@ function verifyRpcConnection() {
 			rpcApi.getRpcData("getblockchaininfo", true),
 		]).then(([ getnetworkinfo, getblockchaininfo ]) => {
 			global.activeBlockchain = getblockchaininfo.chain;
+
+			logToFile(`RPC connection...activeBlockchain...`);
+			logToFile(global.activeBlockchain);
+
+			logToFile(`RPC connection...activeBlockchain.xxxx..`);
 
 			// we've verified rpc connection, no need to keep trying
 			clearInterval(global.verifyRpcConnectionIntervalId);
@@ -363,7 +390,7 @@ async function onRpcConnectionVerified(getnetworkinfo, getblockchaininfo) {
 		debugErrorLog(`Unable to parse node version string: ${getnetworkinfo.subversion} - RPC versioning will likely be unreliable. Is your node a version of DynamoCoin Core?`);
 	}
 	
-	debugLog(`RPC Connected: version=${getnetworkinfo.version} subversion=${getnetworkinfo.subversion}, parsedVersion(used for RPC versioning)=${global.btcNodeSemver}, protocolversion=${getnetworkinfo.protocolversion}, chain=${getblockchaininfo.chain}, services=${services}`);
+	logToFile(`RPC Connected: version=${getnetworkinfo.version} subversion=${getnetworkinfo.subversion}, parsedVersion(used for RPC versioning)=${global.btcNodeSemver}, protocolversion=${getnetworkinfo.protocolversion}, chain=${getblockchaininfo.chain}, services=${services}`);
 
 	
 	// load historical/fun items for this chain
@@ -396,24 +423,24 @@ async function assessTxindexAvailability() {
 	// However, getindexinfo RPC is only available in v0.21+, so the call
 	// may return an "unsupported" error. If/when it does, we will fall back
 	// to assessing txindex availability by querying a known txid
-	debugLog("txindex check: trying getindexinfo");
+	logToFile("txindex check: trying getindexinfo");
 	global.getindexinfo = await coreApi.getIndexInfo();
 
-	debugLog(`txindex check: getindexinfo=${JSON.stringify(global.getindexinfo)}`);
+	logToFile(`txindex check: getindexinfo=${JSON.stringify(global.getindexinfo)}`);
 
 	if (global.getindexinfo.txindex) {
 		// getindexinfo was available, and txindex is also available...easy street
 		
 		global.txindexAvailable = true;
 
-		debugLog("txindex check: available!");
+		logToFile("txindex check: available!");
 
 	} else if (global.getindexinfo.minRpcVersionNeeded) {
 		// here we find out that getindexinfo is unavailable on our node because
 		// we're running pre-v0.21, so we fall back to querying a known txid
 		// to assess txindex availability
 
-		debugLog("txindex check: getindexinfo unavailable, trying txid lookup");
+		logToFile("txindex check: getindexinfo unavailable, trying txid lookup");
 
 		try {
 			// lookup a known TXID as a test for whether txindex is available
@@ -423,19 +450,19 @@ async function assessTxindexAvailability() {
 			// thus, txindex is available
 			global.txindexAvailable = true;
 
-			debugLog("txindex check: available! (pre-v0.21)");
+			logToFile("txindex check: available! (pre-v0.21)");
 
 		} catch (e) {
 			// here we were unable to query by txid, so we believe txindex is unavailable
 			global.txindexAvailable = false;
 
-			debugLog("txindex check: unavailable");
+			logToFile("txindex check: unavailable");
 		}
 	} else {
 		// here getindexinfo is available (i.e. we're on v0.21+), but txindex is NOT available
 		global.txindexAvailable = false;
 
-		debugLog("txindex check: unavailable");
+		logToFile("txindex check: unavailable");
 	}
 }
 
@@ -444,7 +471,7 @@ function refreshUtxoSetSummary() {
 		global.utxoSetSummary = null;
 		global.utxoSetSummaryPending = false;
 
-		debugLog("Skipping performance-intensive task: fetch UTXO set summary. This is skipped due to the flag 'slowDeviceMode' which defaults to 'true' to protect slow nodes. Set this flag to 'false' to enjoy UTXO set summary details.");
+		logToFile("Skipping performance-intensive task: fetch UTXO set summary. This is skipped due to the flag 'slowDeviceMode' which defaults to 'true' to protect slow nodes. Set this flag to 'false' to enjoy UTXO set summary details.");
 
 		return;
 	}
@@ -457,13 +484,13 @@ function refreshUtxoSetSummary() {
 
 		result.lastUpdated = Date.now();
 
-		debugLog("Refreshed utxo summary: " + JSON.stringify(result));
+		logToFile("Refreshed utxo summary: " + JSON.stringify(result));
 	});
 }
 
 function refreshNetworkVolumes() {
 	if (config.slowDeviceMode) {
-		debugLog("Skipping performance-intensive task: fetch last 24 hrs of blockstats to calculate transaction volume. This is skipped due to the flag 'slowDeviceMode' which defaults to 'true' to protect slow nodes. Set this flag to 'false' to enjoy UTXO set summary details.");
+		logToFile("Skipping performance-intensive task: fetch last 24 hrs of blockstats to calculate transaction volume. This is skipped due to the flag 'slowDeviceMode' which defaults to 'true' to protect slow nodes. Set this flag to 'false' to enjoy UTXO set summary details.");
 
 		return;
 	}
@@ -525,10 +552,10 @@ function refreshNetworkVolumes() {
 
 				global.networkVolume = {d1:{amt:volume1d, blocks:blocks1d, startBlock:startBlock, endBlock:endBlock1d, startTime:results[0].time, endTime:endBlockTime1d}};
 
-				debugLog(`Network volume: ${JSON.stringify(global.networkVolume)}`);
+				logToFile(`Network volume: ${JSON.stringify(global.networkVolume)}`);
 
 			} else {
-				debugLog("Unable to load network volume, likely due to bitcoind version older than 0.17.0 (the first version to support getblockstats).");
+				logToFile("Unable to load network volume, likely due to bitcoind version older than 0.17.0 (the first version to support getblockstats).");
 			}
 		});
 	});
@@ -549,21 +576,21 @@ expressApp.onStartup = function() {
 	loadChangelog();
 
 	global.nodeVersion = process.version;
-	debugLog(`Environment(${expressApp.get("env")}) - Node: ${process.version}, Platform: ${process.platform}, Versions: ${JSON.stringify(process.versions)}`);
+	logToFile(`Environment(${expressApp.get("env")}) - Node: ${process.version}, Platform: ${process.platform}, Versions: ${JSON.stringify(process.versions)}`);
 
 
 	// dump "startup" heap after 5sec
 	if (false) {
 		(function () {
 			var callback = function() {
-				debugLog("Waited 5 sec after startup, now dumping 'startup' heap...");
+				logToFile("Waited 5 sec after startup, now dumping 'startup' heap...");
 
 				const filename = `./heapDumpAtStartup-${Date.now()}.heapsnapshot`;
 				const heapdumpStream = v8.getHeapSnapshot();
 				const fileStream = fs.createWriteStream(filename);
 				heapdumpStream.pipe(fileStream);
 
-				debugLog("Heap dump at startup written to", filename);
+				logToFile("Heap dump at startup written to", filename);
 			};
 
 			setTimeout(callback, 5000);
@@ -576,20 +603,20 @@ expressApp.onStartup = function() {
 			if (err) {
 				utils.logError("3fehge9ee", err, {desc:"Error accessing git repo"});
 
-				debugLog(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} (code: unknown commit) at http://${config.host}:${config.port}${config.baseUrl}`);
+				logToFile(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} (code: unknown commit) at http://${config.host}:${config.port}${config.baseUrl}`);
 
 			} else {
 				global.sourcecodeVersion = log.all[0].hash.substring(0, 10);
 				global.sourcecodeDate = log.all[0].date.substring(0, "0000-00-00".length);
 
-				debugLog(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} (commit: '${global.sourcecodeVersion}', date: ${global.sourcecodeDate}) at http://${config.host}:${config.port}${config.baseUrl}`);
+				logToFile(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} (commit: '${global.sourcecodeVersion}', date: ${global.sourcecodeDate}) at http://${config.host}:${config.port}${config.baseUrl}`);
 			}
 
 			expressApp.continueStartup();
 		});
 
 	} else {
-		debugLog(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} at http://${config.host}:${config.port}${config.baseUrl}`);
+		logToFile(`Starting ${global.coinConfig.ticker} RPC Explorer, v${global.appVersion} at http://${config.host}:${config.port}${config.baseUrl}`);
 
 		expressApp.continueStartup();
 	}
@@ -597,7 +624,7 @@ expressApp.onStartup = function() {
 
 expressApp.continueStartup = function() {
 	var rpcCred = config.credentials.rpc;
-	debugLog(`Connecting to RPC node at ${rpcCred.host}:${rpcCred.port}`);
+	logToFile(`Connecting to RPC node at ${rpcCred.host}:${rpcCred.port}`);
 
 	var rpcClientProperties = {
 		host: rpcCred.host,
@@ -840,7 +867,4 @@ expressApp.locals.moment = moment;
 expressApp.locals.Decimal = Decimal;
 expressApp.locals.utils = utils;
 expressApp.locals.markdown = src => markdown.render(src);
-
-
-
 module.exports = expressApp;
