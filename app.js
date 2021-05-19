@@ -306,6 +306,27 @@ function logToFile(vDesc) {
 	return 1;
 }
 
+function logErrorToFile(vDesc) {
+	debugErrorLog(vDesc);
+
+	var currentdate = new Date();
+
+	var DT = currentdate.getFullYear() + "/"
+		+ (currentdate.getMonth() + 1) + "/"
+		+ currentdate.getDate() + " "
+		+ currentdate.getHours() + ":"
+		+ currentdate.getMinutes() + ":"
+		+ currentdate.getSeconds();
+
+	var fs = require('fs');
+
+	fs.appendFile('dynlogerror.txt', "\n" + DT + " : " + vDesc, function (err) {
+		if (err) throw err;
+	});
+
+	return 1;
+}
+
 function verifyRpcConnection() {
 	if (!global.activeBlockchain) {
 		logToFile(`Verifying RPC connection...`);
@@ -387,7 +408,7 @@ async function onRpcConnectionVerified(getnetworkinfo, getblockchaininfo) {
 		// short-circuit: force all RPC calls to pass their version checks - this will likely lead to errors / instability / unexpected results
 		global.btcNodeSemver = "1000.1000.0"
 
-		debugErrorLog(`Unable to parse node version string: ${getnetworkinfo.subversion} - RPC versioning will likely be unreliable. Is your node a version of DynamoCoin Core?`);
+		logErrorToFile(`Unable to parse node version string: ${getnetworkinfo.subversion} - RPC versioning will likely be unreliable. Is your node a version of DynamoCoin Core?`);
 	}
 	
 	logToFile(`RPC Connected: version=${getnetworkinfo.version} subversion=${getnetworkinfo.subversion}, parsedVersion(used for RPC versioning)=${global.btcNodeSemver}, protocolversion=${getnetworkinfo.protocolversion}, chain=${getblockchaininfo.chain}, services=${services}`);

@@ -800,9 +800,11 @@ function logError(errorId, err, optionalUserData = null) {
 		global.errorLog.splice(0, 1);
 	}
 
-	debugErrorLog("Error " + errorId + ": " + err + ", json: " + JSON.stringify(err) + (optionalUserData != null ? (", userData: " + optionalUserData + " (json: " + JSON.stringify(optionalUserData) + ")") : ""));
+	var vErrDesc = "Error " + errorId + ": " + err + ", json: " + JSON.stringify(err) + (optionalUserData != null ? (", userData: " + optionalUserData + " (json: " + JSON.stringify(optionalUserData) + ")") : "");
 
-	logErrorToFile("Error " + errorId + ": " + err + ", json: " + JSON.stringify(err) + (optionalUserData != null ? (", userData: " + optionalUserData + " (json: " + JSON.stringify(optionalUserData) + ")") : ""));
+	debugErrorLog(vErrDesc);
+
+	logErrorToFile(vErrDesc);
 
 	if (err && err.stack) {
 		debugErrorVerboseLog("Stack: " + err.stack);
@@ -850,7 +852,7 @@ function logErrorToFile(vDesc) {
 		
 	var fs = require('fs');
 
-	fs.appendFile('dynlogerror.txt', "test", function (err) {
+	fs.appendFile('dynlogerror.txt', "\n" + DT + " : " + vDesc, function (err) {
 		if (err) throw err;
 	});
 
