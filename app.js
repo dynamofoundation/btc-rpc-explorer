@@ -342,11 +342,6 @@ function verifyRpcConnection() {
 		]).then(([ getnetworkinfo, getblockchaininfo ]) => {
 			global.activeBlockchain = getblockchaininfo.chain;
 
-			logToFile(`RPC connection...activeBlockchain...`);
-			logToFile(global.activeBlockchain);
-
-			logToFile(`RPC connection...activeBlockchain.xxxx..`);
-
 			// we've verified rpc connection, no need to keep trying
 			clearInterval(global.verifyRpcConnectionIntervalId);
 
@@ -856,7 +851,7 @@ expressApp.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (expressApp.get("env") === "development" || expressApp.get("env") === "local") {
+/*if (expressApp.get("env") === "development" || expressApp.get("env") === "local") {
 	expressApp.use(function(err, req, res, next) {
 		if (err) {
 			utils.logError("3289023yege", err);
@@ -868,7 +863,7 @@ if (expressApp.get("env") === "development" || expressApp.get("env") === "local"
 			error: err
 		});
 	});
-}
+}*/
 
 // production error handler
 // no stacktraces leaked to user
