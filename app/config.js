@@ -196,11 +196,12 @@ module.exports = {
 			txOutputMaxDefaultDisplay:10
 		},
 		valueDisplayMaxLargeDigits: 4,
-		prioritizedToolIdsList: [0, 10, 11, 9, 3, 4, 12, 2, 5, 1, 6, 7, 13, 8],
+		/*prioritizedToolIdsList: [0, 10, 11, 9, 3, 4, 12, 2, 5, 1, 6, 7, 13, 8],*/
+		prioritizedToolIdsList: [0, 4, 2, 5, 1, 6, 7, 13, 8],
 		toolSections: [
 			{name: "Basics", items: [0, 2]},
 			{name: "Mempool", items: [5, 4]},
-			{name: "Analysis", items: [9, 10, 11, 12, 3]},
+			/*{name: "Analysis", items: [9, 10, 11, 12, 3]},*/
 			{name: "Technical", items: [6, 7, 1]},
 			{name: "Fun", items: [8, 13]},
 		]
